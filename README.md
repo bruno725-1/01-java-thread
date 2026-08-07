@@ -24,17 +24,16 @@ Exiba se cada palpite foi “maior”, “menor” ou “acertou” e finalize q
 ## 3) Thread contador de caracteres
 
 Modifique Tarefa para receber uma string.
-No run(), conte e exiba a quantidade de vogais, consoantes e dígitos da string.
-Substitua o sleep por processamento de cada caractere.
+Conte e exiba a quantidade de caracteres da string.
 
 ## 4) Thread soma de vetores
 
 Faça Tarefa receber dois vetores de inteiros.
-No run(), some elemento a elemento e imprima o resultado parcial de cada índice.
+Some elemento a elemento e imprima o resultado parcial de cada índice.
 Explique como essa tarefa pode ser paralelizada com várias threads para vetores grandes.
 
 ## 5) Thread soma de matrizes
 
 Faça Tarefa receber duas matrizes de inteiros.
-No run(), some elemento a elemento e imprima o resultado parcial de cada índice.
+Some elemento a elemento e imprima o resultado parcial de cada índice.
 Explique como essa tarefa pode ser paralelizada com várias threads para matrizes grandes.
