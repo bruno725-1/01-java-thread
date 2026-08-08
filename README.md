@@ -9,6 +9,9 @@ java Main
 
 # Exercícios:
 
+Em Java, implemente as aplicações abaixo.
+Em Markdown, explique suas soluções.
+
 ## 1) Thread calculadora
 
 Altere Tarefa para receber dois números e uma operação (+, -, *, /).
