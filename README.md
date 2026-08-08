@@ -16,7 +16,7 @@ Em Markdown, explique suas soluções.
 
 Altere Tarefa para receber dois números e uma operação (+, -, *, /).
 Em cada passo do laço, calcule um valor diferente (por exemplo, n1 + i, n2 * i, etc.).
-Mostre o resultado parcial no console em vez de apenas “processando passo”.
+Mostre o resultado no console em vez de apenas “processando passo”.
 
 ## 2) Thread jogo de adivinhação
 

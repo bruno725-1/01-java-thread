@@ -1,5 +1,5 @@
 // 1. Criar a classe principal:
-public class Main {
+public class Principal {
     public static void main(String[] args) {
         // 2. Criar instâncias da classe Tarefa:
         Tarefa tarefa1 = new Tarefa("Thread A");
