@@ -111,3 +111,15 @@ Divisão entre 50000, 10 e 1 = 5000
 Subtração entre 20, 3 e 1 = 16
 ...
 Em outra execução, a ordem pode ser diferente.
+
+# Thread Jogo de Advinhação
+## 1. Objetivo
+O programa demonstra o uso de várias threads por meio da interface `runnable`.
+## 2. Execução
+Cada tarefa cria um número secreto entre 1 e 10. Após isso, um loop for é executado três vezes. Em cada iteração, um novo número, também entre 1 e 10 é gerado. Se o número for igual ao número secreto, o programa informa que o jogador acertou, e o loop é encerrado imediatamente; se for diferente, o loop continua a ser executado até chegar a 3 tentativas. Se nenhum dos palpites acertar, a tarefa é finalizada.
+## 3. Geração dos números aleatórios
+Para gerar esses números, utilizamos a classe `Random`, que gera números aleatórios de 0 até n - 1, onde n é o número fornecido como parâmetro na construtora do objeto.
+Para que o intervalo do número gerado fique entre 1 e n, adicionamos 1:
+```java
+int numeroSecreto = aleatorio.nextInt(10) + 1;
+Em vez de os números gerados serem entre 0 e 9, serão entre 1 e 10.
