@@ -1,11 +1,12 @@
 // 1. Criar a classe principal:
+import java.util.Random;
 public class Principal {
     public static void main(String[] args) {
         // 2. Criar instâncias da classe Tarefa:
-        Tarefa tarefa1 = new Tarefa("Olá, Mundo!");
-        Tarefa tarefa2 = new Tarefa("A ligeira raposa marrom saltou sobre o cachorro cansado ");
-        Tarefa tarefa3 = new Tarefa("Cruzeiro, Cruzeiro querido\nTão combatido, jamais vencido!");
-        Tarefa tarefa4 = new Tarefa("Este texto está cifrado, só que não");
+        Tarefa tarefa1 = new Tarefa(preencherVetor(), preencherVetor());
+        Tarefa tarefa2 = new Tarefa(preencherVetor(), preencherVetor());
+        Tarefa tarefa3 = new Tarefa(preencherVetor(), preencherVetor());
+        Tarefa tarefa4 = new Tarefa(preencherVetor(), preencherVetor());
 
         // 3. Passar as tarefas para objetos do tipo Thread:
         Thread t1 = new Thread(tarefa1);
@@ -18,5 +19,14 @@ public class Principal {
         t2.start();
         t3.start();
         t4.start();
+    }
+
+    public static int[] preencherVetor() {
+        int[] vetor = new int[10];
+        Random aleatorio = new Random();
+        for(int i = 0; i < 10; i++)
+            vetor[i] = aleatorio.nextInt(Integer.MAX_VALUE / 2) + 1;
+
+        return vetor;
     }
 }

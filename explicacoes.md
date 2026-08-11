@@ -176,3 +176,138 @@ System.out.printf("TAREFA %d FINALIZADA!%n", id);
 O identificador da tarefa é utilizado para indicar qual tarefa terminou.
 Por exemplo:
 TAREFA 1 FINALIZADA!
+
+# Thread Soma de vetores
+## 1. Objetivo
+O programa demonstra o uso de várias threads para somar os elementos de dois vetores.
+Cada tarefa recebe dois vetores, cada um com 10 posições. Para cada posição, os valores dos dois vetores são somados e o resultado é exibido no console.
+São criadas quatro tarefas, cada uma trabalhando com seu próprio par de vetores, e cada tarefa é executada por uma thread diferente.
+
+---
+
+## 2. Classe `Tarefa`
+Esta classe possui os seguintes atributos:
+```java
+private static int proximoId = 1;
+private int id;
+private int[] vet1;
+private int[] vet2;
+```
+Os ids são gerados de forma sequencial, e a primeira tarefa recebe o id 1.
+## 2.1. Vetores
+```java
+private int[] vet1;
+private int[] vet2;
+```
+Esses atributos armazenam os dois vetores que serão utilizados pela tarefa. Cada tarefa recebe seu próprio par de vetores.
+
+---
+
+## 3. Construtora
+A construtora recebe dois vetores:
+```java
+public Tarefa(int[] v1, int[] v2) {
+    id = proximoId++;
+    vet1 = v1;
+    vet2 = v2;
+}
+```
+Um identificador é atribuído à tarefa, depois, os vetores recebidos como parâmetros são armazenados nos atributos `vet1`e `vet2`.
+Assim, quando uma tarefa é criada:
+```java
+Tarefa tarefa1 = new Tarefa(preencherVetor(), preencherVetor());
+```
+os dois vetores gerados são associados àquela tarefa.
+
+---
+
+## 4. Método `run()`
+O método `run()` contém o trabalho que será executado pela thread, que é percorrer os vetores e somar os índices. A cada iteração, os valores que estão no mesmo índice dos dois vetores são somados:
+```java
+soma = vet1[i] + vet2[i];
+```
+Por exemplo, se:
+```text
+vet1 = [10, 20, 30]
+vet2 = [ 5,  8,  2]
+```
+as operações serão:
+```text
+posição 0 → 10 + 5  = 15
+posição 1 → 20 + 8  = 28
+posição 2 → 30 + 2  = 32
+```
+Como trabalhamos com a premissa de que ambos os vetores têm o mesmo tamanho, que a função preencherVetor garante que seja verdadeira, podemos utilizar o comprimento do vetor1 como ponto de parada. O resultado de cada soma é impresso no console com System.out.printf.
+
+---
+
+## 5. Método `preencherVetor()`
+
+O método:
+```java
+public static int[] preencherVetor()
+```
+é responsável por criar e preencher um vetor de 10 posições com valores inteiros aleatórios. O tipo de retorno `int[]` indica que o método retorna um vetor de inteiros.
+
+---
+
+## 6. Geração dos números aleatórios
+Para gerar os números que irão preencher os vetores, utilizamos a classe Random.
+Um objeto dessa classe é criado:
+```java
+Random aleatorio = new Random();
+```
+Depois, o vetor é percorrido:
+```java
+for(int i = 0; i < 10; i++)
+```
+Em cada posição é armazenado um número aleatório:
+```java
+vetor[i] = aleatorio.nextInt(Integer.MAX_VALUE / 2) + 1;
+```
+O valor `Integer.MAX_VALUE` representa o maior valor possível para um
+`int` em Java:
+```text
+2147483647
+```
+Dividindo esse valor por 2:
+```text
+1073741823
+```
+O `+ 1` é utilizado porque `nextInt(n)` gera valores de `0` até `n - 1`.
+Assim, os valores gerados ficam entre 1 e 1073741823.
+
+--
+
+## 7. Prevenção de overflow
+O limite de `Integer.MAX_VALUE / 2` foi utilizado para evitar que a soma de dois elementos ultrapasse o limite de um `int`.
+O maior valor possível para cada elemento é 1073741823
+Portanto, a maior soma possível é:
+1073741823 + 1073741823 = 2147483646
+Esse valor ainda está abaixo de:
+Integer.MAX_VALUE = 2147483647
+Dessa forma, a soma realizada pelo programa permanece dentro do intervalo válido de um `int`.
+
+## 9. Como essa tarefa poderia ser paralelizada para vetores grandes
+Neste exercício, cada tarefa recebe um vetor e cada thread executa uma tarefa.
+Ou seja: Em um vetor de 1.000.000 de posições:
+Thread 1
+posição 0 → 999.999
+Ela calcula todas as somas sequencialmente.
+Com várias threads, o vetor poderia ser dividido em blocos:
+Thread 1 → posições 0       até 249.999
+Thread 2 → posições 250.000 até 499.999
+Thread 3 → posições 500.000 até 749.999
+Thread 4 → posições 750.000 até 999.999
+Cada thread executaria a mesma lógica:
+```java
+for (int i = inicio; i < fim; i++) {
+    int soma = vet1[i] + vet2[i];
+    // imprime resultado
+}
+```
+A diferença é que cada uma recebe um início e um fim diferentes. Quatro threads podem estar fazendo simultaneamente:
+Thread 1: vet1[123] + vet2[123]
+Thread 2: vet1[500768] + vet2[500768]
+Thread 3: vet1[750457] + vet2[750457]
+Thread 4: vet1[900001] + vet2[900001]
