@@ -123,3 +123,56 @@ Para que o intervalo do número gerado fique entre 1 e n, adicionamos 1:
 ```java
 int numeroSecreto = aleatorio.nextInt(10) + 1;
 Em vez de os números gerados serem entre 0 e 9, serão entre 1 e 10.
+
+# Thread Contador de caracteres
+
+Cada tarefa recebe uma `string`, possui um identificador único e, quando executada, calcula e exibe a quantidade de caracteres da string recebida.
+
+---
+
+## 2. Classe `Tarefa`
+
+Possui três atributos:
+proximoId: Contador estático utilizado para gerar o próximo identificador;
+id: Identificador individual da tarefa;
+estringue: A string que será analisada.
+## 2.1. Geração dos identificadores
+A variável proximoId é static, portanto existe apenas uma cópia dela, compartilhada por todas as instâncias da classe Tarefa.
+Ela começa com o valor 1 e é incrementada toda vez que uma nova tarefa é criada.
+O atributo id não é estático. Cada tarefa possui seu próprio identificador.
+No construtor:
+```Java
+id = proximoId++;
+O valor de proximoId é atribuído ao id da tarefa que está sendo construída, em seguida proximoId é incrementado.
+Dessa forma, as tarefas recebem identificadores sequenciais:
+Tarefa 1 → id = 1
+Tarefa 2 → id = 2
+Tarefa 3 → id = 3
+...
+## 3. Construtora
+A construtora recebe uma string como parâmetro. Enquanto um identificador único é atribuído à tarefa, o parâmetro s é armazenado no atributo estringue.
+## 4. Método run()
+O método run() contém o código que será executado pela thread.
+## 4.1. Contagem de caracteres
+A quantidade de caracteres da string é obtida utilizando o método:
+```Java
+estringue.length();
+Este método retorna um valor inteiro (int) correspondente à quantidade de caracteres da string. Esse valor é usado com o especificador %d:
+```Java
+System.out.printf("A string %s da tarefa %d tem %d caracteres%n", estringue, id, estringue.length());
+Especificadores utilizados:
+%s: Utilizado para exibir a string;
+%d: Utilizado para exibir números inteiros;
+%n: Utilizado para imprimir uma nova linha.
+Por exemplo, se a tarefa receber a string "Java", a saída será:
+A string Java da tarefa 1 tem 4 caracteres
+
+---
+
+## 5. Finalização da tarefa
+Depois de exibir a quantidade de caracteres, uma mensagem indica que a tarefa foi finalizada:
+```Java
+System.out.printf("TAREFA %d FINALIZADA!%n", id);
+O identificador da tarefa é utilizado para indicar qual tarefa terminou.
+Por exemplo:
+TAREFA 1 FINALIZADA!

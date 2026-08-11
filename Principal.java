@@ -2,10 +2,10 @@
 public class Principal {
     public static void main(String[] args) {
         // 2. Criar instâncias da classe Tarefa:
-        Tarefa tarefa1 = new Tarefa();
-        Tarefa tarefa2 = new Tarefa();
-        Tarefa tarefa3 = new Tarefa();
-        Tarefa tarefa4 = new Tarefa();
+        Tarefa tarefa1 = new Tarefa("Olá, Mundo!");
+        Tarefa tarefa2 = new Tarefa("A ligeira raposa marrom saltou sobre o cachorro cansado ");
+        Tarefa tarefa3 = new Tarefa("Cruzeiro, Cruzeiro querido\nTão combatido, jamais vencido!");
+        Tarefa tarefa4 = new Tarefa("Este texto está cifrado, só que não");
 
         // 3. Passar as tarefas para objetos do tipo Thread:
         Thread t1 = new Thread(tarefa1);
