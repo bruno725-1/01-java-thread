@@ -288,7 +288,9 @@ Esse valor ainda está abaixo de:
 Integer.MAX_VALUE = 2147483647
 Dessa forma, a soma realizada pelo programa permanece dentro do intervalo válido de um `int`.
 
-## 9. Como essa tarefa poderia ser paralelizada para vetores grandes
+---
+
+## 8. Como essa tarefa poderia ser paralelizada para vetores grandes
 Neste exercício, cada tarefa recebe um vetor e cada thread executa uma tarefa.
 Ou seja: Em um vetor de 1.000.000 de posições:
 Thread 1
@@ -311,3 +313,131 @@ Thread 1: vet1[123] + vet2[123]
 Thread 2: vet1[500768] + vet2[500768]
 Thread 3: vet1[750457] + vet2[750457]
 Thread 4: vet1[900001] + vet2[900001]
+
+# Thread soma de matrizes
+## 1. Objetivo
+O programa demonstra o uso de várias threads para somar os elementos de duas matrizes.
+Cada tarefa recebe duas matrizes, cada uma com 4 linhas e 4 colunas. Para cada célula, os valores das duas matrizes são somados e o resultado é exibido no console.
+São criadas quatro tarefas, cada uma trabalhando com seu próprio par de matrizes, e cada tarefa é executada por uma thread diferente.
+
+---
+
+## 2. Classe `Tarefa`
+Esta classe possui os seguintes atributos:
+```java
+private static int proximoId = 1;
+private int id;
+private int[][] mat1;
+private int[][] mat2;
+```
+Os ids são gerados de forma sequencial, e a primeira tarefa recebe o id 1.
+## 2.1. Matrizes
+```java
+private int[][] mat1;
+private int[][] mat2;
+```
+Esses atributos armazenam as duas matrizes que serão utilizadas pela tarefa. Cada tarefa recebe seu próprio par de matrizes.
+
+---
+
+## 3. Construtora
+A construtora recebe duas matrizes:
+```java
+public Tarefa(int[][] m1, int[][] m2) {
+    id = proximoId++;
+    mat1 = m1;
+    mat2 = m2;
+}
+```
+Um identificador é atribuído à tarefa, depois, as matrizes recebidas como parâmetro são armazenadas nos atributos `mat1` e `mat2`.
+Assim, quando uma tarefa é criada:
+```java
+Tarefa tarefa1 = new Tarefa(preencherMatriz(), preencherMatriz());
+```
+As duas matrizes geradas são associadas àquela tarefa.
+
+---
+
+$$ 4. Método `run()`
+O método `run()` contém o trabalho que será executado pela thread, que é percorrer as matrizes e somar os valores das células. A cada iteração, os valores que estão na mesma célula das duas matrizes são somados:
+```java
+for (int i = 0; i < mat1.length; i++) {
+    for (int j = 0; j < mat1[i].length; j++) {
+        soma = mat1[i][j] + mat2[i][j];
+        System.out.printf("Soma dos valores da posição %d,%d das matrizes da tarefa %d: %d%n", i, j, id, soma);
+    }
+}
+```
+Por exemplo, se:
+```text
+mat1 = {
+{10, 20, 30},
+{40, 50, 60}
+}
+mat2 = {
+{5, 8, 2},
+{20, 25, 30}
+}
+```
+As operações serão:
+posição 0,0 → 10 + 5  = 15
+posição 0,1 → 20 + 8 = 28
+posição 0,2 → 30 + 2 = 32
+posição 1,0 → 40 + 20 = 60
+...
+```
+Como trabalhamos com a premissa de que ambas as matrizes têm o mesmo tamanho, garantida pela função preencherMatriz, podemos utilizar o número de linhas da matriz 1 como ponto de parada do for externo. O resultado de cada soma é impresso no console com System.out.printf.
+
+---
+
+## 5. Método `preencherMatriz`
+```java
+public static int[] preencherMatriz()
+```
+é responsável por criar e preencher uma matriz 4x4 com valores aleatórios. O tipo de retorno `int[][]` indica que o método retorna uma matriz de inteiros.
+
+---
+
+## 6. Como essa tarefa poderia ser paralelizada para matrizes grandes
+No caso das matrizes, temos mais de uma possibilidade para paralelizar essa tarefa:
+Suponhamos uma matriz 10000x10000:
+Podemos dividí-la por linhas:
+                 MATRIZ
+┌──────────────────────────────────────────┐
+│ linha 0                                  │
+│ linha 1                                  │
+│ ...                                      │
+│ linha 2499                                │ ← Thread 1
+├──────────────────────────────────────────┤
+│ linha 2500                                │
+│ ...                                      │
+│ linha 4999                                │ ← Thread 2
+├──────────────────────────────────────────┤
+│ linha 5000                                │
+│ ...                                      │
+│ linha 7499                                │ ← Thread 3
+├──────────────────────────────────────────┤
+│ linha 7500                                │
+│ ...                                      │
+│ linha 9999                                │ ← Thread 4
+└──────────────────────────────────────────┘
+A thread 1 faria:
+for (int i = 0; i < 2500; i++) {
+    for (int j = 0; j < 10000; j++) {
+        soma = mat1[i][j] + mat2[i][j];
+    }
+}
+A Thread 2 faria as linhas 2500 até 4999, e assim por diante.
+Outra possibilidade seria dividir por colunas:
+Thread 1 → colunas 0    até 2499
+Thread 2 → colunas 2500 até 4999
+Thread 3 → colunas 5000 até 7499
+Thread 4 → colunas 7500 até 9999
+O importante é que cada célula seja calculada por uma única thread.
+Divisão por blocos:
+Thread 1 → linhas 0 até 2499 e colunas 0 até 2499
+Thread 2 → linhas 0 até 2499 e colunas 2500 até 4999
+Thread 3 → linhas 0 até 2499 e colunas 5000 até 7499
+Thread 4 → linhas 0 até 2499 e colunas 7500 até 9999
+Thread 5 → linhas 2500 até 4999 e colunas 0 até 2499
+E assim por diante.
